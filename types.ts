@@ -77,11 +77,11 @@ export interface WebCheckResult {
 }
 
 export interface DnsResult {
-    a?: string[];
-    aaaa?: string[];
-    mx?: { exchange: string; priority: number }[];
-    txt?: string[][];
-    ns?: string[];
+    A?: string[];
+    AAAA?: string[];
+    MX?: { exchange: string; priority: number }[];
+    TXT?: string[][];
+    NS?: string[];
 }
 
 export interface SslResult {
