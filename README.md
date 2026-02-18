@@ -1,6 +1,6 @@
 # Cludz API JavaScript SDK
 
-A clean, modular, and high-performance JavaScript SDK for [Cludz API](https://api.cludz.net/), built for **Bun**.
+A clean, modular, and high-performance JavaScript SDK for [Cludz API](https://docs.cludz.net/), built for **Bun**.
 
 ## Installation
 
