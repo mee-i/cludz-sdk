@@ -42,6 +42,13 @@ console.log(video.data.url);
 - `cludz.tools.qr(text)`: Returns a Bun Response (Image).
 - `cludz.tools.barcode(text, options)`: Returns a Bun Response (Image).
 
+### Image
+- `cludz.image.meme(source, topText, bottomText)`: Generate a meme. `source` can be a URL, local path, Buffer, or Blob.
+- `cludz.image.compress(source, quality)`: Compress an image (quality 1-100).
+- `cludz.image.convert(source, format)`: Convert image format (jpeg, png, webp, avif).
+- `cludz.image.crop(source, { left, top, width, height })`: Crop an image.
+- *Note: All image methods return a standard `Response` object containing the binary image data.*
+
 ### Account
 - `cludz.account.me()`: Get current account info.
 - `cludz.account.status()`: Get API health/monitoring.

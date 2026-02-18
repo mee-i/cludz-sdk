@@ -2,6 +2,7 @@
 import { Downloader } from "./modules/downloader";
 import { Tools } from "./modules/tools";
 import { Account } from "./modules/account";
+import { Image } from "./modules/image";
 import type { CludzOptions, RequestOptions } from "./types";
 
 export class Cludz {
@@ -12,6 +13,7 @@ export class Cludz {
     public readonly downloader: Downloader;
     public readonly tools: Tools;
     public readonly account: Account;
+    public readonly image: Image;
 
     constructor(options: CludzOptions) {
         if (!options.api) throw new Error("API URL is required");
@@ -23,6 +25,7 @@ export class Cludz {
         this.downloader = new Downloader(this);
         this.tools = new Tools(this);
         this.account = new Account(this);
+        this.image = new Image(this);
     }
 
     /**
@@ -54,8 +57,13 @@ export class Cludz {
         };
 
         if (options.body) {
-            fetchOptions.body = JSON.stringify(options.body);
-            headers["Content-Type"] = "application/json";
+            if (options.body instanceof FormData) {
+                fetchOptions.body = options.body;
+                // Don't set Content-Type, fetch will set it with boundary
+            } else {
+                fetchOptions.body = JSON.stringify(options.body);
+                headers["Content-Type"] = "application/json";
+            }
         }
 
         const response = await fetch(url.toString(), fetchOptions);
