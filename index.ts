@@ -1,14 +1,14 @@
-import { AI } from "./modules/ai";
+// import { AI } from "./modules/ai";
 import { Downloader } from "./modules/downloader";
 import { Tools } from "./modules/tools";
 import { Account } from "./modules/account";
-import type { CludzOptions, ApiResponse, RequestOptions } from "./types";
+import type { CludzOptions, RequestOptions } from "./types";
 
 export class Cludz {
     public readonly baseUrl: string;
     public readonly token?: string;
     
-    public readonly ai: AI;
+    // public readonly ai: AI;
     public readonly downloader: Downloader;
     public readonly tools: Tools;
     public readonly account: Account;
@@ -19,7 +19,7 @@ export class Cludz {
         this.baseUrl = options.api.replace(/\/$/, "");
         this.token = options.token;
 
-        this.ai = new AI(this);
+        // this.ai = new AI(this);
         this.downloader = new Downloader(this);
         this.tools = new Tools(this);
         this.account = new Account(this);
