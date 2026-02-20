@@ -1,6 +1,6 @@
 export interface CludzOptions {
     api: string;
-    token?: string;
+    key?: string;
 }
 
 export interface ApiResponse<T = any> {
@@ -90,4 +90,36 @@ export interface SslResult {
     valid_from: string;
     valid_to: string;
     remaining_days: number;
+}
+
+export interface TaskResult {
+    taskId: string;
+    status_url: string;
+}
+
+export interface TaskState<T = any> {
+    id: string;
+    user_id: string | null;
+    status: "Pending" | "Processing" | "Completed" | "Failed";
+    progress: number;
+    message: string | null;
+    data: T | null;
+    error: string | null;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface StorageOptions {
+    api: string;
+    id: string;
+    token: string;
+}
+
+export interface FileInfo {
+    name: string;
+    size: number;
+    isDirectory: boolean;
+    checksum: string;
+    created_at: string;
+    modified_at: string;
 }

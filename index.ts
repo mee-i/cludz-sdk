@@ -3,29 +3,35 @@ import { Downloader } from "./modules/downloader";
 import { Tools } from "./modules/tools";
 import { Account } from "./modules/account";
 import { Image } from "./modules/image";
+import { Tasks } from "./modules/tasks";
+export { Storage } from "./modules/storage";
+export type { StorageSource } from "./modules/storage";
+
 import type { CludzOptions, RequestOptions } from "./types";
 
 export class Cludz {
     public readonly baseUrl: string;
-    public readonly token?: string;
+    public readonly key?: string;
     
     // public readonly ai: AI;
     public readonly downloader: Downloader;
     public readonly tools: Tools;
     public readonly account: Account;
     public readonly image: Image;
+    public readonly tasks: Tasks;
 
     constructor(options: CludzOptions) {
         if (!options.api) throw new Error("API URL is required");
         
         this.baseUrl = options.api.replace(/\/$/, "");
-        this.token = options.token;
+        this.key = options.key;
 
         // this.ai = new AI(this);
         this.downloader = new Downloader(this);
         this.tools = new Tools(this);
         this.account = new Account(this);
         this.image = new Image(this);
+        this.tasks = new Tasks(this);
     }
 
     /**
@@ -47,8 +53,8 @@ export class Cludz {
             "Accept": "application/json",
         };
 
-        if (this.token) {
-            headers["X-API-Key"] = this.token;
+        if (this.key) {
+            headers["X-API-Key"] = this.key;
         }
 
         const fetchOptions: RequestInit = {
