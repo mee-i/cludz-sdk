@@ -17,7 +17,7 @@ import { Cludz } from '@cludz/sdk';
 
 const cludz = new Cludz({
   api: 'https://api.cludz.net/',
-  token: 'your_api_token_here'
+  key: 'your_api_key_here'
 });
 
 // Download a video
