@@ -22,12 +22,5 @@ jobs:
       - name: Install dependencies
         run: bun install
 
-      - name: Bump version
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          bunx bumpp jsr.json --yes --push --tag
-
-      # 2. Publish ke JSR
       - name: Publish to JSR
         run: bunx jsr publish
