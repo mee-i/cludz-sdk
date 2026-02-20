@@ -194,10 +194,51 @@ export interface TaskResult {
 }
 
 /**
- * Current state of a background task.
- * @template T The type of the result data when the task is completed.
+ * Unified interface representing all possible task result data.
+ * All fields are optional to support different task types.
  */
-export interface TaskState<T = any> {
+export interface TaskData {
+    /** Number of results (YouTube search). */
+    count?: number;
+    /** List of search results (YouTube search). */
+    list?: YouTubeSearchResult[];
+    /** URL for media download (Downloader). */
+    download_url?: string;
+    /** HTTP status code (Web check). */
+    status?: number;
+    /** HTTP status text (Web check). */
+    statusText?: string;
+    /** Response content type (Web check). */
+    contentType?: string;
+    /** Response latency (Web check). */
+    latency?: string;
+    /** IPv4 records (DNS). */
+    A?: string[];
+    /** IPv6 records (DNS). */
+    AAAA?: string[];
+    /** MX records (DNS). */
+    MX?: { exchange: string; priority: number }[];
+    /** TXT records (DNS). */
+    TXT?: string[][];
+    /** Name server records (DNS). */
+    NS?: string[];
+    /** Certificate subject (SSL). */
+    subject?: any;
+    /** Certificate issuer (SSL). */
+    issuer?: any;
+    /** Certificate valid from date (SSL). */
+    valid_from?: string;
+    /** Certificate valid to date (SSL). */
+    valid_to?: string;
+    /** Days remaining for SSL certificate (SSL). */
+    remaining_days?: number;
+}
+
+/**
+ * Current state of a background task.
+ * @template T The type of the result data when the task is completed. Defaults to TaskData.
+ */
+export interface TaskState<T = TaskData> {
     /** Unique task identifier. */
     id: string;
     /** User ID associated with the task, if any. */
