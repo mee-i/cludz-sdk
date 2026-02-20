@@ -1,12 +1,24 @@
 import type { Cludz } from "../index";
 
+/**
+ * Supported image source types.
+ * Can be a URL string, a local file path string, a Buffer, a Blob, or a File.
+ */
 export type ImageSource = string | Buffer | Blob | File;
 
+/**
+ * Module for image processing and manipulation.
+ * Supports environment-agnostic file resolution (Bun and Node.js).
+ */
 export class Image {
+    /** @internal */
     constructor(private sdk: Cludz) {}
 
     /**
-     * Resolves various image sources into a Blob or URL string
+     * Resolves various image sources into a Blob or URL string.
+     * @param source The image source to resolve.
+     * @returns A promise that resolves to a Blob or a URL string.
+     * @private
      */
     private async resolveImage(source: ImageSource): Promise<Blob | string> {
         if (typeof source === "string") {
@@ -43,10 +55,11 @@ export class Image {
     }
 
     /**
-     * Generate a meme from an image
-     * @param source Image source (URL, path, Buffer, Blob)
-     * @param top Top text
-     * @param bottom Bottom text
+     * Generates a meme by adding text to an image.
+     * @param source The image source (URL, path, Buffer, Blob, or File).
+     * @param top The text to display at the top of the meme.
+     * @param bottom The text to display at the bottom of the meme.
+     * @returns A promise that resolves to a Response object containing the generated image.
      */
     async meme(source: ImageSource, top?: string, bottom?: string): Promise<Response> {
         const image = await this.resolveImage(source);
@@ -68,9 +81,10 @@ export class Image {
     }
 
     /**
-     * Compress an image
-     * @param source Image source (URL, path, Buffer, Blob)
-     * @param quality Compression quality (1-100)
+     * Compresses an image to reduce its file size.
+     * @param source The image source (URL, path, Buffer, Blob, or File).
+     * @param quality Compression quality (1-100). Defaults to 80.
+     * @returns A promise that resolves to a Response object containing the compressed image.
      */
     async compress(source: ImageSource, quality: number = 80): Promise<Response> {
         const image = await this.resolveImage(source);
@@ -91,9 +105,10 @@ export class Image {
     }
 
     /**
-     * Convert an image format
-     * @param source Image source (URL, path, Buffer, Blob)
-     * @param format Target format
+     * Converts an image to a different format.
+     * @param source The image source (URL, path, Buffer, Blob, or File).
+     * @param format The target image format.
+     * @returns A promise that resolves to a Response object containing the converted image.
      */
     async convert(source: ImageSource, format: "jpeg" | "jpg" | "png" | "webp" | "avif"): Promise<Response> {
         const image = await this.resolveImage(source);
@@ -114,9 +129,10 @@ export class Image {
     }
 
     /**
-     * Crop an image
-     * @param source Image source (URL, path, Buffer, Blob)
-     * @param options Crop dimensions
+     * Crops an image to specific dimensions.
+     * @param source The image source (URL, path, Buffer, Blob, or File).
+     * @param options The crop dimensions (left, top, width, height).
+     * @returns A promise that resolves to a Response object containing the cropped image.
      */
     async crop(source: ImageSource, options: { left: number; top: number; width: number; height: number }): Promise<Response> {
         const image = await this.resolveImage(source);

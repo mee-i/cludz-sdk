@@ -1,12 +1,27 @@
 import type { StorageOptions, FileInfo } from "../types";
 
+/**
+ * Supported storage source types.
+ * Can be a local file path string, a Buffer, a Blob, or a File.
+ */
 export type StorageSource = string | Buffer | Blob | File;
 
+/**
+ * Standalone module for interacting with Cludz Storage containers.
+ */
 export class Storage {
+    /** The base URL of the storage container. */
     public readonly api: string;
+    /** The storage container identifier. */
     public readonly id: string;
+    /** The access token for this storage container. */
     public readonly token: string;
 
+    /**
+     * Initializes a new instance of the Storage client.
+     * @param options Configuration options for the storage container.
+     * @throws Error if any required option (api, id, token) is missing.
+     */
     constructor(options: StorageOptions) {
         if (!options.api) throw new Error("API URL is required");
         if (!options.id) throw new Error("Storage ID is required");
@@ -17,6 +32,12 @@ export class Storage {
         this.token = options.token;
     }
 
+    /**
+     * Constructs headers for storage requests.
+     * @param additional Optional additional headers.
+     * @returns A record of headers.
+     * @private
+     */
     private getHeaders(additional: Record<string, string> = {}): Record<string, string> {
         return {
             Token: this.token,
@@ -24,12 +45,22 @@ export class Storage {
         };
     }
 
+    /**
+     * Normalizes a storage path by ensuring it starts with a slash.
+     * @param p The path to normalize.
+     * @returns The normalized path.
+     * @private
+     */
     private normalizePath(p: string): string {
         return p.startsWith("/") ? p : `/${p}`;
     }
 
     /**
-     * Resolves various file sources into a Blob or File for FormData
+     * Resolves various file sources into a Blob or File for FormData.
+     * @param source The file source (path, Buffer, Blob, or File).
+     * @param fileName Optional file name to use when resolving from generic sources.
+     * @returns A promise that resolves to a Blob or File.
+     * @private
      */
     private async resolveFile(source: StorageSource, fileName: string = "file"): Promise<Blob | File> {
         if (typeof source === "string") {
@@ -63,10 +94,12 @@ export class Storage {
     }
 
     /**
-     * Upload a local file to the storage
-     * @param targetDirectory The directory on the storage to upload to (e.g. "/")
-     * @param source The absolute path to the local file, or a File/Blob/Buffer object
-     * @param fileName Optional file name to use when providing a Blob/Buffer
+     * Uploads a file to a specific directory in the storage.
+     * @param targetDirectory The target directory in storage (e.g., "/Documents").
+     * @param source The file source (local path, Buffer, Blob, or File).
+     * @param fileName Optional filename to use in storage.
+     * @returns A promise that resolves when the upload is complete.
+     * @throws Error if the upload fails.
      */
     async upload(targetDirectory: string, source: StorageSource, fileName?: string): Promise<void> {
         const url = `${this.api}${this.normalizePath(targetDirectory)}`;
@@ -90,8 +123,10 @@ export class Storage {
     }
 
     /**
-     * Delete a file or directory
-     * @param targetPath The path on the storage to delete
+     * Deletes a file or directory from the storage.
+     * @param targetPath The path of the item to delete.
+     * @returns A promise that resolves when the deletion is complete.
+     * @throws Error if the deletion fails.
      */
     async delete(targetPath: string): Promise<void> {
         const url = `${this.api}${this.normalizePath(targetPath)}`;
@@ -107,9 +142,11 @@ export class Storage {
     }
 
     /**
-     * Create a new folder
-     * @param parentPath The parent directory where the folder will be created
-     * @param folderName The name of the new folder
+     * Creates a new folder in the storage.
+     * @param parentPath The path to the parent directory.
+     * @param folderName The name of the new folder.
+     * @returns A promise that resolves when the folder is created.
+     * @throws Error if the folder creation fails.
      */
     async createFolder(parentPath: string, folderName: string): Promise<void> {
         const url = `${this.api}${this.normalizePath(parentPath)}`;
@@ -126,9 +163,11 @@ export class Storage {
     }
 
     /**
-     * Create an empty file
-     * @param parentPath The parent directory
-     * @param fileName The name of the new file
+     * Creates an empty file in the storage.
+     * @param parentPath The path to the parent directory.
+     * @param fileName The name of the new file.
+     * @returns A promise that resolves when the file is created.
+     * @throws Error if the file creation fails.
      */
     async createFile(parentPath: string, fileName: string): Promise<void> {
         const url = `${this.api}${this.normalizePath(parentPath)}`;
@@ -145,9 +184,11 @@ export class Storage {
     }
 
     /**
-     * Rename a file or directory
-     * @param targetPath The current path of the file/folder
-     * @param newName The new name (just the name, not full path)
+     * Renames or moves a file or directory in the storage.
+     * @param targetPath The current path of the item.
+     * @param newName The new name for the item.
+     * @returns A promise that resolves when the item is renamed.
+     * @throws Error if the rename operation fails.
      */
     async rename(targetPath: string, newName: string): Promise<void> {
         const url = `${this.api}${this.normalizePath(targetPath)}`;
@@ -164,8 +205,10 @@ export class Storage {
     }
 
     /**
-     * List directory contents
-     * @param targetPath The directory path to list
+     * Lists the contents of a directory in the storage.
+     * @param targetPath The path of the directory to list.
+     * @returns A promise that resolves to an array of file and directory information.
+     * @throws Error if the list operation fails.
      */
     async list(targetPath: string): Promise<FileInfo[]> {
         const url = `${this.api}${this.normalizePath(targetPath)}`;
@@ -184,8 +227,10 @@ export class Storage {
     }
 
     /**
-     * Download a file
-     * @param targetPath The path to the file on storage
+     * Downloads a file from the storage as a Blob.
+     * @param targetPath The path of the file in storage.
+     * @returns A promise that resolves to the file data as a Blob.
+     * @throws Error if the download operation fails.
      */
     async download(targetPath: string): Promise<Blob> {
         const url = `${this.api}${this.normalizePath(targetPath)}`;

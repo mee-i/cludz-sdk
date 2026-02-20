@@ -1,18 +1,31 @@
 import type { Cludz } from "../index";
 import type { ApiResponse, WebCheckResult, DnsResult, SslResult } from "../types";
 
+/**
+ * Options for barcode generation.
+ */
 export interface BarcodeOptions {
+    /** The barcode symbology type (e.g., "code128", "ean13"). */
     type?: string;
+    /** Whether to show the text below the barcode. */
     showText?: boolean;
+    /** Scaling factor for the barcode. */
     scale?: number;
+    /** Height of the barcode in pixels. */
     height?: number;
 }
 
+/**
+ * Module for various utility tools including network checks and media generation.
+ */
 export class Tools {
+    /** @internal */
     constructor(private sdk: Cludz) {}
 
     /**
-     * Perform a web check on a URL
+     * Performs a web connectivity check on a URL.
+     * @param url The URL to check.
+     * @returns A promise that resolves to the web check results.
      */
     async webCheck(url: string): Promise<ApiResponse<WebCheckResult>> {
         return this.sdk._request("/v1/tools/web-check", {
@@ -21,7 +34,9 @@ export class Tools {
     }
 
     /**
-     * Get DNS records for a domain
+     * Retrieves DNS records for a specific domain.
+     * @param domain The domain name to query.
+     * @returns A promise that resolves to the DNS results.
      */
     async dns(domain: string): Promise<ApiResponse<DnsResult>> {
         return this.sdk._request("/v1/tools/dns", {
@@ -30,7 +45,9 @@ export class Tools {
     }
 
     /**
-     * Get SSL information for a domain
+     * Retrieves SSL certificate information for a domain.
+     * @param domain The domain name to query.
+     * @returns A promise that resolves to the SSL information.
      */
     async ssl(domain: string): Promise<ApiResponse<SslResult>> {
         return this.sdk._request("/v1/tools/ssl", {
@@ -39,7 +56,9 @@ export class Tools {
     }
 
     /**
-     * Get metadata/OpenGraph info for a URL
+     * Retrieves OpenGraph metadata for a given URL.
+     * @param url The URL to analyze.
+     * @returns A promise that resolves to the metadata.
      */
     async meta(url: string): Promise<ApiResponse> {
         return this.sdk._request("/v1/tools/meta", {
@@ -48,7 +67,9 @@ export class Tools {
     }
 
     /**
-     * Generate a QR Code
+     * Generates a QR Code image.
+     * @param text The text or URL to encode in the QR code.
+     * @returns A promise that resolves to a Response object containing the image.
      */
     async qr(text: string): Promise<Response> {
         return this.sdk._request("/v1/tools/qr", {
@@ -57,7 +78,10 @@ export class Tools {
     }
 
     /**
-     * Generate a Barcode
+     * Generates a Barcode image.
+     * @param text The text to encode in the barcode.
+     * @param options Configuration options for barcode generation.
+     * @returns A promise that resolves to a Response object containing the image.
      */
     async barcode(text: string, options: BarcodeOptions = {}): Promise<Response> {
         return this.sdk._request("/v1/tools/barcode", {

@@ -9,17 +9,33 @@ export type { StorageSource } from "./modules/storage";
 
 import type { CludzOptions, RequestOptions } from "./types";
 
+/**
+ * The main Cludz SDK client.
+ * Provides access to various modules including downloader, tools, account, image, and tasks.
+ */
 export class Cludz {
+    /** The base URL of the Cludz API. */
     public readonly baseUrl: string;
+    /** The API key used for authentication. */
     public readonly key?: string;
     
     // public readonly ai: AI;
+    /** Module for downloading media from supported platforms. */
     public readonly downloader: Downloader;
+    /** Module for various utility tools (QR, DNS, SSL, etc.). */
     public readonly tools: Tools;
+    /** Module for account management and status monitoring. */
     public readonly account: Account;
+    /** Module for image processing and manipulation. */
     public readonly image: Image;
+    /** Module for managing and waiting for background tasks. */
     public readonly tasks: Tasks;
 
+    /**
+     * Initializes a new instance of the Cludz client.
+     * @param options Configuration options for the client.
+     * @throws Error if the API URL is not provided.
+     */
     constructor(options: CludzOptions) {
         if (!options.api) throw new Error("API URL is required");
         
@@ -35,7 +51,11 @@ export class Cludz {
     }
 
     /**
-     * Internal request handler using Bun fetch
+     * Internal request handler using fetch.
+     * @param endpoint The API endpoint to request (e.g., "/v1/youtube/download").
+     * @param options Request configuration including method, query params, and body.
+     * @returns A promise that resolves to the parsed JSON data or a Response object for binary content.
+     * @throws Error if the API returns a non-OK response.
      * @internal
      */
     async _request<T = any>(endpoint: string, options: RequestOptions = {}): Promise<T | Response> {
