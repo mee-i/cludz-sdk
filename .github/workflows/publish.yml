@@ -41,7 +41,14 @@ jobs:
       - name: Notify Webhook
         if: success()
         run: |
+          VERSION=$(node -p "require('./package.json').version")
+          COMMIT_MSG=$(git log -1 --pretty=%B | head -n 1)
+          REPO_URL="https://github.com/${{ github.repository }}"
+          JSR_URL="https://jsr.io/@cludz/sdk@$VERSION"
+          NPM_URL="https://www.npmjs.com/package/@cludz/sdk/v/$VERSION"
+          RUN_ID="${{ github.run_id }}"
+          
           curl -X POST "${{ secrets.WEBHOOK_URL }}" \
             -H "X-Webhook-Key: ${{ secrets.WEBHOOK_SECRET }}" \
             -H "Content-Type: application/json" \
-            -d "{\"message\": \"[New Version] @cludz/sdk v$(node -p \"require('./package.json').version\") has been published to JSR and NPM!\"}"
+            -d "{\"message\": \"[New Version] @cludz/sdk v$VERSION\n\nCommit: $COMMIT_MSG\nJSR: $JSR_URL\nNPM: $NPM_URL\nRun ID: $RUN_ID\nRepo: $REPO_URL\"}"
