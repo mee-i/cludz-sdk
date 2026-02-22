@@ -19,8 +19,29 @@ jobs:
 
       - uses: oven-sh/setup-bun@v2
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.x'
+          registry-url: 'https://registry.npmjs.org'
+
       - name: Install dependencies
         run: bun install
 
+      - name: Build package
+        run: bun run build
+
       - name: Publish to JSR
         run: bunx jsr publish
+
+      - name: Publish to NPM
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Notify Webhook
+        if: success()
+        run: |
+          curl -X POST "${{ secrets.WEBHOOK_URL }}" \
+            -H "X-Webhook-Key: ${{ secrets.WEBHOOK_SECRET }}" \
+            -H "Content-Type: application/json" \
+            -d "{\"message\": \"[New Version] @cludz/sdk v$(node -p \"require('./package.json').version\") has been published to JSR and NPM!\"}"

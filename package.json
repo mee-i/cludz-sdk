@@ -1,13 +1,29 @@
 {
   "name": "@cludz/sdk",
-  "description": "Cludz API JavaScript SDK",
-  "module": "index.ts",
-  "type": "module",
-  "private": true,
+  "version": "0.2.4",
+  "module": "./dist/index.js",
+  "main": "./dist/index.cjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsup index.ts --format cjs,esm --dts --clean",
+    "dev": "tsup index.ts --format cjs,esm --watch --dts",
+    "lint": "bun x eslint ."
+  },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "tsup": "^8.5.1"
   },
   "peerDependencies": {
     "typescript": "^5"
-  }
+  },
+  "description": "Cludz API JavaScript SDK",
+  "private": false,
+  "type": "module"
 }
