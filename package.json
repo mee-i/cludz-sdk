@@ -1,6 +1,6 @@
 {
   "name": "@cludz/sdk",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "module": "./dist/index.js",
   "main": "./dist/index.cjs",
   "types": "./dist/index.d.ts",
@@ -24,6 +24,14 @@
     "typescript": "^5"
   },
   "description": "Cludz API JavaScript SDK",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mee-i/cludz-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mee-i/cludz-sdk/issues"
+  },
+  "homepage": "https://github.com/mee-i/cludz-sdk#readme",
   "private": false,
   "type": "module"
 }
