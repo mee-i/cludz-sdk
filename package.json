@@ -1,6 +1,6 @@
 {
   "name": "@cludz/sdk",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "module": "./dist/index.js",
   "main": "./dist/index.cjs",
   "types": "./dist/index.d.ts",
@@ -11,6 +11,10 @@
       "types": "./dist/index.d.ts"
     }
   },
+  "files": [
+    "dist",
+    "index.ts"
+  ],
   "scripts": {
     "build": "tsup index.ts --format cjs,esm --dts --clean",
     "dev": "tsup index.ts --format cjs,esm --watch --dts",
