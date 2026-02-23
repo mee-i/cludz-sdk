@@ -1,33 +1,42 @@
 {
   "name": "@cludz/sdk",
+  "description": "Cludz API JavaScript SDK",
   "version": "0.2.7",
+  "type": "module",
+  "private": false,
+  "files": [
+    "modules",
+    "dist",
+    "index.ts"
+  ],
   "module": "./dist/index.js",
   "main": "./dist/index.cjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs",
-      "types": "./dist/index.d.ts"
-    }
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./package.json": "./package.json"
   },
-  "files": [
-    "dist",
-    "index.ts"
-  ],
   "scripts": {
-    "build": "tsup index.ts --format cjs,esm --dts --clean",
-    "dev": "tsup index.ts --format cjs,esm --watch --dts",
-    "lint": "bun x eslint ."
+    "build": "bunup index.ts --format cjs,esm,iife --minify",
+    "dev": "bunup index.ts --format cjs,esm,iife --watch --dts",
+    "lint": "bunx eslint ."
   },
   "devDependencies": {
     "@types/bun": "latest",
-    "tsup": "^8.5.1"
+    "bunup": "^0.16.29"
   },
   "peerDependencies": {
     "typescript": "^5"
   },
-  "description": "Cludz API JavaScript SDK",
   "repository": {
     "type": "git",
     "url": "https://github.com/mee-i/cludz-sdk.git"
@@ -35,7 +44,5 @@
   "bugs": {
     "url": "https://github.com/mee-i/cludz-sdk/issues"
   },
-  "homepage": "https://github.com/mee-i/cludz-sdk#readme",
-  "private": false,
-  "type": "module"
+  "homepage": "https://github.com/mee-i/cludz-sdk#readme"
 }
