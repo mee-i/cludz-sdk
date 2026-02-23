@@ -1,7 +1,7 @@
 {
   "name": "@cludz/sdk",
   "description": "Cludz API JavaScript SDK",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "type": "module",
   "private": false,
   "files": [
